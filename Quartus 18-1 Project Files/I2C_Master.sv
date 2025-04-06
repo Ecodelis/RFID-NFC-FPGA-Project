@@ -86,7 +86,6 @@ module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MH
             state <= IDLE;
             addr_with_rw <= 0;
             bit_cnt <= 0;
-            busy <= 0;
             done <= 0;
         end else begin
             if (scl_tick) begin
@@ -103,35 +102,28 @@ module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MH
             busy <= 0; // Clear busy flag when done
         end
 
-        // Start and Stop Conditions
+        // START Condition
         if (state == START) begin
             // START: SDA & SCL go LOW
             scl_internal <= 0;
             sda_en <= 1;
             sda_out <= 0;
-        end else if (state == STOP) begin
-            // STOP: SDA & SCL go HIGH
-            scl_internal <= 1; // SCL high
-            sda_en <= 1;
-            sda_out <= 1; // SDA goes
-        end else begin
-            scl_internal <= scl_tick ? 1 : 0; // SCL driven by the generated tick
+            addr_with_rw <= {addr, read_write}; // Concatenate address with R/W bit
         end
 
 
         // Sending Slave Address (with read bit)
         if (state == SEND_ADDR) begin
-            // Send slave address with read bit (R/W = 1)
             sda_en <= 1; // Enable SDA output
-            sda_out <= addr[6]; // Send the MSB of the address
+            sda_out <= addr_with_rw[7]; // Send the MSB of the address (or address + R/W bit)
             if (scl_tick) begin
-                // Shift the address bits
-                addr <= addr << 1; // Shift the address left
+                // Shift the address left by 1 bit (send the next bit)
+                addr_with_rw <= addr_with_rw << 1;
                 bit_cnt <= bit_cnt + 1;
             end
         end
 
-        // Step 2: Start Reading Data
+        // Start Reading Data
         if (state == READ) begin
             // Shift in data byte-by-byte from slave
             sda_en <= 0;  // SDA is now input (data comes from slave)
@@ -156,7 +148,7 @@ module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MH
             end
         end
 
-        // Step 3: Generate STOP condition (after last byte)
+        // STOP condition (after last byte)
         if (state == STOP) begin
             sda_en <= 1;
             sda_out <= 1; // SDA goes high during stop condition
