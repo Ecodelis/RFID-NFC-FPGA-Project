@@ -1,0 +1,192 @@
+// File: i2c_master.sv
+// Description: 	I2C master module
+//	
+// Author: Marcus Fu
+// Date: 2024-04-02
+
+module i2c_master (
+    input logic clk, reset,  // Clock and reset
+    input logic start,  // Start condition trigger
+    input logic [6:0] addr,  // 7-bit I2C address
+    input logic rw,  // Read (1) or Write (0)
+    input logic [7:0] data_in,  // Data to send (if write)
+    output logic [7:0] data_out,  // Data received (if read)
+    output logic busy, ack,  // Busy flag and ACK signal
+    i2c_if.master i2c_bus // Connect to interface
+);
+
+    typedef enum logic [2:0] {
+	IDLE, START, ADDR, WRITE, READ, STOP
+	} state_t;
+    
+	 state_t state = IDLE;
+	 
+    logic [3:0] bit_count;
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            state <= IDLE;
+            i2c_bus.scl <= 1;
+            i2c_bus.sda_oe <= 0; // Release SDA
+            busy <= 0;
+        end else begin
+            case (state)
+                IDLE: begin
+                    if (start) begin
+                        busy <= 1;
+                        i2c_bus.scl <= 1;
+                        i2c_bus.sda_oe <= 1; // Drive SDA
+                        i2c_bus.sda_out <= 0; // Start condition
+                        state <= START;
+                    end
+                end
+                
+                START: begin
+                    i2c_bus.scl <= 0;
+                    state <= ADDR;
+                    bit_count <= 7;
+                end
+
+                ADDR: begin
+                    i2c_bus.sda_out <= addr[bit_count];
+                    bit_count <= bit_count - 1;
+                    if (bit_count == 0)
+                        state <= WRITE;
+                end
+
+                WRITE: begin
+                    i2c_bus.sda_out <= rw;
+                    state <= STOP;
+                end
+
+                STOP: begin
+                    i2c_bus.sda_out <= 1; // Stop condition
+                    i2c_bus.sda_oe <= 0;
+                    busy <= 0;
+                    state <= IDLE;
+                end
+            endcase
+        end
+    end
+endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// File: i2c_slave.sv
+// Description: 	I2C slave module
+//	
+// Author: Marcus Fu
+// Date: 2024-04-02
+
+module i2c_slave(input logic clk, reset,
+                 input logic [7:0] data_in, // Data to send to master
+                 output logic [7:0] data_out, // Data received from master
+                 input logic busy, ack,  // Flags
+                 i2c_if.slave i2c_bus // Connect to the interface
+);  
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            i2c_bus.sda <= 1;  // Set SDA to idle state (high)
+        end else begin
+            // Basic slave logic to handle receiving data from the master
+            if (i2c_bus.scl == 1 && i2c_bus.sda == 0) begin
+                data_out <= data_in;  // Read data when SCL is high
+            end
+        end
+    end
+endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// File: i2c_if.sv
+// Description: 	I2C interface module. Includes modports that are used 
+//						by I2C_master.sv and I2C_slave.sv
+//	
+// Author: Marcus Fu
+// Date: 2024-04-02
+
+interface i2c_if(input logic clk);
+
+    // I2C clock and data lines
+    logic scl, sda;
+	 
+    // Tri-state logic for SDA
+    logic sda_in, sda_out, sda_oe;  // Output control for SDA
+	 
+	 
+
+    // Modport for I2C Master
+    modport master(
+        output scl,   	// Clock output
+        inout sda,    	// Bidirectional data line
+        input sda_in, 	// Input data line
+        output sda_out, // Output data line
+        output sda_oe  	// Output enable for SDA
+    );
+	 
+    
+    // Modport for I2C Slave
+    modport slave(
+        input scl,    // Clock input
+        inout sda     // Bidirectional data line
+    );
+
+    // Logic for controlling the SDA line
+    assign sda = (sda_oe) ? sda_out : 1'bz;  // High impedance when not driving
+    assign sda_in = sda; // Read data from SDA
+	 
+	 
+endinterface

@@ -1,0 +1,15 @@
+
+
+module PN532-FireLinkBridge (
+    input logic clk, reset,
+    output logic scl,
+    inout logic sda
+);
+
+    i2c_if i2c_bus(clk);
+	 
+	 
+	 
+	 
+endmodule
+	 
