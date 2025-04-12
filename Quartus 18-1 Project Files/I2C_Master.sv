@@ -4,7 +4,10 @@
 // Author: Marcus Fu
 // Date: 2024-04-05
 
-module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MHz clock
+module i2c_master #(
+    parameter FPGA_CLK_FREQ = 50_000_000, // Default FPGA clock: 50 MHz
+    parameter I2C_FREQ = 100_000          // Default I2C Standard Mode clock: 100 kHz
+)( // Default SCL: 100kHz for a 50 MHz clock
     input logic clk,                // Clock input
     input logic reset_n,            // Active-low Reset
 
@@ -24,28 +27,33 @@ module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MH
 // Clock Divider
 //    * The clock divider generates the SCL clock signal for I2C communication.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Precompute the clock divider using parameters
+    localparam int CLK_DIV = FPGA_CLK_FREQ / (I2C_FREQ * 2); // Computed at synthesis time
+
     // Clock Divider Parameters
     logic [$clog2(CLK_DIV)-1:0] clk_cnt; // Clock divider counter: LOG2(CLK_DIV)-1 bits in size
-    logic scl_tick;
+    logic scl_tick; // when clock ticks, scl_tick is high for one clock cycle
+    logic scl_internal; // Square wave (Drives SCL line)
 
-    // Clock divider logic (For Standard / Fast I2C mode)
-    always_ff @(posedge clk or negedge rst_n) begin
+    // Clock divider logic
+    always_ff @(posedge clk or negedge reset_n) begin
         if (!reset_n) begin
             clk_cnt <= 0;
+            scl_internal <= 1; // Default SCL high
             scl_tick <= 0;
+        end else if (clk_cnt == CLK_DIV - 1) begin
+            clk_cnt <= 0;
+            scl_internal <= ~scl_internal;  // Toggle clock
+            scl_tick <= 1;                  // Generate a tick
         end else begin
-            if (clk_cnt == CLK_DIV - 1) begin
-                clk_cnt <= 0;  // Reset the counter
-                scl_tick <= 1;  // Generate SCL tick
-            end else begin
-                clk_cnt <= clk_cnt + 1; // Increment the counter
-                scl_tick <= 0;  // No tick
-            end
+            clk_cnt <= clk_cnt + 1;
+            scl_tick <= 0;
         end
     end
 
     // Use the scl_tick to generate the SCL clock signal
-    assign scl = scl_tick; // SCL driven by the generated tick
+    assign scl = scl_internal; // SCL driven by the generated tick
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,126 +63,113 @@ module i2c_master #(parameter CLK_DIV = 500)( // Default SCL: 100kHz for a 50 MH
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     
     // State Definitions
-    typedef enum logic [2:0] {
+    typedef enum logic [3:0] { // Updated to 4 bits to accommodate additional states
         IDLE,
         START,
         SEND_ADDR,
+        ADDR_ACK,    // Check for ACK/NACK after sending the address
         WRITE,
+        DATA_ACK,    // Check for ACK/NACK after sending a data byte
+        WRITE_NEXT,  // Handle multi-byte writes
         READ,
+        READ_NEXT,   // Handle multi-byte reads
         STOP,
         DONE
     } state_t;
 
     state_t state, next_state;
 
-    // SDA signal control
-    logic sda_out;  // Output data to SDA line
-    logic sda_en;   // Enable SDA output
-    assign sda = sda_en ? sda_out : 1'bz;
-
-    logic scl_internal;
-    assign scl = scl_internal;
-
-    // SEND_ADDR Logic
-    logic [7:0] bit_cnt; // Bit counter for data transfer
-    logic [7:0] addr_with_rw; // Address + Read/Write bit
-
-
     // State transition logic
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk or negedge reset_n) begin
         if (!reset_n) begin
             state <= IDLE;
-            addr_with_rw <= 0;
-            bit_cnt <= 0;
-            done <= 0;
         end else begin
             if (scl_tick) begin
                 state <= next_state;
-            end
-        end
-
-        // Busy flag logic
-        if (state == IDLE) begin
-            busy <= 0; // Not busy in IDLE state
-        end else if (state == START) begin
-            busy <= 1; // Set busy flag when starting transaction
-        end else if (state == DONE) begin
-            busy <= 0; // Clear busy flag when done
-        end
-
-        // START Condition
-        if (state == START) begin
-            // START: SDA & SCL go LOW
-            scl_internal <= 0;
-            sda_en <= 1;
-            sda_out <= 0;
-            addr_with_rw <= {addr, read_write}; // Concatenate address with R/W bit
-        end
-
-
-        // Sending Slave Address (with read bit)
-        if (state == SEND_ADDR) begin
-            sda_en <= 1; // Enable SDA output
-            sda_out <= addr_with_rw[7]; // Send the MSB of the address (or address + R/W bit)
-            if (scl_tick) begin
-                // Shift the address left by 1 bit (send the next bit)
-                addr_with_rw <= addr_with_rw << 1;
-                bit_cnt <= bit_cnt + 1;
-            end
-        end
-
-        // Start Reading Data
-        if (state == READ) begin
-            // Shift in data byte-by-byte from slave
-            sda_en <= 0;  // SDA is now input (data comes from slave)
-            if (scl_tick) begin
-                shift_reg <= {shift_reg[6:0], sda}; // Shift in data bit by bit
-                bit_cnt <= bit_cnt + 1;
-            end
-
-            // After receiving 8 bits (1 byte), send ACK (except for last byte)
-            if (bit_cnt == 8) begin
-                if (rx_len > 1) begin
-                    // Send ACK (tell slave to continue sending)
-                    sda_en <= 1;
-                    sda_out <= 0; // ACK
-                end else begin
-                    // Send NACK (tell slave we're done)
-                    sda_en <= 1;
-                    sda_out <= 1; // NACK
-                end
-                rx_data <= shift_reg; // Store received byte
-                bit_cnt <= 0; // Reset bit counter for next byte
-            end
-        end
-
-        // STOP condition (after last byte)
-        if (state == STOP) begin
-            sda_en <= 1;
-            sda_out <= 1; // SDA goes high during stop condition
-            scl_internal <= 1; // SCL high during STOP
-            if (scl_tick) begin
-                done <= 1; // Transaction is done
             end
         end
     end
 
     // Next-state logic (Conditions needed to switch to next state) 
     always_comb begin
-        next_state = state;
+        next_state = state; // Default to current state
 
         case (state)
-            IDLE: if (start) next_state = START;
-            START: next_state = SEND_ADDR;
-            SEND_ADDR: next_state = read_write ? READ : WRITE; // Slave address + R/W bit
-            WRITE: next_state = STOP;
-            READ: next_state = STOP;
-            STOP: next_state = DONE;
-            DONE: next_state = IDLE;
+            IDLE: begin
+                if (start) next_state = START;
+
+                busy = 1; // Indicate that the I2C master is busy
+                done = 0; // Reset done signal
+            end
+            START: begin
+                next_state = SEND_ADDR;
+
+                sda_en = 1; // Enable SDA output
+            end
+            SEND_ADDR: begin
+                next_state = read_write ? READ : WRITE; // Slave address + R/W bit
+            end
+            WRITE: begin
+                next_state = STOP;
+            end
+            READ: begin
+                next_state = STOP;
+            end
+            STOP: begin
+                next_state = DONE;
+            end
+            DONE: begin
+                next_state = IDLE;
+            end
         endcase
     end
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// State Logic
+//    * Each state of the FSM is responsible for specific actions in the I2C protocol.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // SDA signal control
+    logic sda_out;  // Output data to SDA line
+    logic sda_en;   // Enable SDA output (release or holds SDA)
+
+    // SDA Driver
+    always_ff @(negedge scl_internal or negedge reset_n) begin
+        if (!reset_n) begin
+            sda <= 0; // Default SDA low
+        end else begin
+            sda <= sda_en ? sda_out : 1'bz; // Drive SDA when enabled
+        end
+    end
+
+
+    // Start and Stop (Asynchronous to SCL)
+    always_ff @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+            addr_with_rw <= 0;
+            bit_cnt <= 0;
+            done <= 0;
+            sda_out <= 1;       // Default SDA high
+            sda_en <= 0;        // Release SDA
+        end else if (scl_tick) begin
+        case (state)
+            START: begin
+                sda_out <= 0;      // SDA goes low
+            end
+
+            SEND_ADDR: begin
+                
+            end
+
+            default: begin
+                // Default behavior for other states
+            end
+        endcase
+    end
+
+    end
 
 
 
