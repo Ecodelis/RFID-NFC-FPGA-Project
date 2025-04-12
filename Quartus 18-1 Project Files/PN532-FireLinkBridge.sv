@@ -15,6 +15,12 @@ module PN532_FireLink_Bridge (
     output logic [7:0] data_out // Data read from PN532
 );
 
+    Clock_Divider clk_div_inst #()(
+        .clk_in(CLOCK_50),
+        .reset_n(reset),
+        .clk_out(scl)
+    );
+
 
 
 endmodule
