@@ -126,7 +126,7 @@ module I2C_Master #(
 
                 SEND_BIT: begin
                     if (scl_mid_tick == LOW) begin
-                        sda_out <= shift_reg[bit_cnt - 1];
+                        if (bit_cnt > 1) sda_out <= shift_reg[bit_cnt - 1];
                         if (bit_cnt > 0) bit_cnt <= bit_cnt - 1;
                     end
                 end

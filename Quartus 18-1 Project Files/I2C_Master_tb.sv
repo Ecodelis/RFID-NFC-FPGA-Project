@@ -70,7 +70,7 @@ module i2c_master_PN532_tb;
 
         
 
-        #200000 ;
+        #400000 ;
         $stop;
         // Wait until transfer is complete
         wait (busy == 1);
