@@ -1,11 +1,4 @@
-{C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv} {1 {vlog -work work -sv -stats=none {C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module i2c_master_PN532_tb
-
-Top level modules:
-	i2c_master_PN532_tb
-
-} {} {}} {C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv} {1 {vlog -work work -sv -stats=none {C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv}
+{C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv} {1 {vlog -work work -sv -stats=none {C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module I2C_Slave
 

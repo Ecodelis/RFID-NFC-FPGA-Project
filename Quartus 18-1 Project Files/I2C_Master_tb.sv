@@ -14,6 +14,7 @@ module i2c_master_PN532_tb;
     logic [6:0] slave_addr;
     logic [7:0] data_in[0:31];
     logic [5:0] data_len;
+    logic write_or_read;
     logic busy, ack_error;
     logic scl;
     tri   sda;
@@ -32,6 +33,7 @@ module i2c_master_PN532_tb;
         .slave_addr(slave_addr),
         .data_in(data_in),
         .data_len(data_len),
+        .write_or_read(write_or_read),
         .busy(busy),
         .ack_error(ack_error),
         .scl(scl),
@@ -62,6 +64,7 @@ module i2c_master_PN532_tb;
 
         slave_addr = 6'b100110;  // PN532 I2C address = 0x24
         data_len   = 2;
+        write_or_read = 0; // write
 
         #20;
         start = 1;

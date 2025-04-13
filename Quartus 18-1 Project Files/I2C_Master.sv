@@ -13,6 +13,7 @@ module I2C_Master #(
     input  logic [6:0]  slave_addr,      // 7-bit I2C address
     input  logic [7:0]  data_in[32],     // Byte array to send
     input  logic [5:0]  data_len,        // Number of bytes
+    input logic write_or_read,           // write/read bit (0/1)
     output logic        busy,            // High while sending
     output logic        ack_error,       // High if any byte not ACK'd
     output logic        scl,
@@ -119,7 +120,7 @@ module I2C_Master #(
                         sda_en  <= 1;
                         sda_out <= 0; // Pull SDA low
 
-                        shift_reg <= {slave_addr, 1'b0}; // 7-bit addr + write = 0, read = 1
+                        shift_reg <= {slave_addr, write_or_read}; // 7-bit addr + write = 0, read = 1
                         bit_cnt   <= 8;
                     end
                 end
