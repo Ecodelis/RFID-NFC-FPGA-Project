@@ -114,12 +114,12 @@ module I2C_Master #(
                 end
 
                 START: begin
-                    if (scl_mid_tick == LOW) begin
+                    if (scl_mid_tick == HIGH) begin
                         busy    <= 1;
                         sda_en  <= 1;
                         sda_out <= 0; // Pull SDA low
 
-                        shift_reg <= {slave_addr, 1'b0}; // 7-bit addr + write bit
+                        shift_reg <= {slave_addr, 1'b0}; // 7-bit addr + write = 0, read = 1
                         bit_cnt   <= 8;
                     end
                 end
@@ -136,10 +136,12 @@ module I2C_Master #(
                         sda_en <= 0; // Release SDA for ACK from slave
 
                         // Uncomment to pass ACK in testbench
-                        //sda_end <= 1;
-                        //sda_out <= 0;
-                        
-                        if (sda === 1'b1) ack_error <= 1;
+                        sda_en <= 1;
+                        sda_out <= 0;
+
+                        // Comment line below to pass ACK in testbench
+                        //if (sda === 1'b1) ack_error <= 1;
+
                         byte_idx <= byte_idx + 1;
 
                         // Prepare next byte to send if there is any
