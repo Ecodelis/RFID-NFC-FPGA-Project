@@ -133,9 +133,13 @@ module I2C_Master #(
 
                 CHECK_ACK: begin
                     if (scl_mid_tick == LOW) begin
-                        sda_en <= 1; // Release SDA for ACK from slave
-                        sda_out <= 0;
-                        //if (sda === 1'b1) ack_error <= 1;
+                        sda_en <= 0; // Release SDA for ACK from slave
+
+                        // Uncomment to pass ACK in testbench
+                        //sda_end <= 1;
+                        //sda_out <= 0;
+                        
+                        if (sda === 1'b1) ack_error <= 1;
                         byte_idx <= byte_idx + 1;
 
                         // Prepare next byte to send if there is any

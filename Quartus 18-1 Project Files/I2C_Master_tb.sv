@@ -61,7 +61,7 @@ module i2c_master_PN532_tb;
         data_in[7] = 8'h00; // Postamble
 
         slave_addr = 6'b100110;  // PN532 I2C address = 0x24
-        data_len   = 1;
+        data_len   = 2;
 
         #20;
         start = 1;
