@@ -1,0 +1,85 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Software/Quartus_18-1
+vI2C_Master
+Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z1 !s110 1744533710
+!i10b 1
+!s100 Z?hB:AfoAMbm[J8l6SfT<3
+Izm8oMI4m8YF[>TZiMZ;jW2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 I2C_Master_sv_unit
+S1
+Z3 dC:/SHAMM/github repos/RFID-NFC-FPGA-Project/ModelSim 10-5b
+w1744533689
+8C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv
+FC:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv
+L0 6
+Z4 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z5 !s108 1744533710.000000
+!s107 C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv|
+!i113 1
+Z6 o-work work -sv
+Z7 tCvgOpt 0
+n@i2@c_@master
+vi2c_master_PN532_tb
+R0
+R1
+!i10b 1
+!s100 2ef>DMEOb<eMe]la7SoYW1
+I><Q>PeRZVU1`PEd1^Gkk01
+R2
+!s105 I2C_Master_tb_sv_unit
+S1
+R3
+w1744513335
+8C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv
+FC:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv
+L0 9
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv|
+!i113 1
+R6
+R7
+ni2c_master_@p@n532_tb
+vI2C_Slave
+R0
+R1
+!i10b 1
+!s100 =hM7UZ31^8>mXGdzm`4l:2
+IgHcZldS<6<X21]nZf@CnE1
+R2
+!s105 I2C_Slave_sv_unit
+S1
+R3
+w1744510390
+8C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv
+FC:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv
+L0 7
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv|
+!i113 1
+R6
+R7
+n@i2@c_@slave
