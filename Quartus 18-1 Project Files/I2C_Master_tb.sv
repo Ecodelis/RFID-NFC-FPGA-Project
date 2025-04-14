@@ -3,7 +3,7 @@
 // Author: Marcus Fu
 // Date: 2024-04-12
 
-`timescale 1ns/1ps
+`timescale 1us / 1ns
 
 module i2c_master_PN532_tb;
 
@@ -60,6 +60,14 @@ module i2c_master_PN532_tb;
     );
 
     // === TASKS === //
+    // Delay for a precise time using $time
+    task automatic delay_ns(input time delay_time);
+        time t_start = $time;
+        while ($time < t_start + delay_time) begin
+            #1ns; // Yield time
+        end
+    endtask
+
 
     // Wait for START condition: SDA goes low while SCL is high
     task wait_for_start();
@@ -77,41 +85,42 @@ module i2c_master_PN532_tb;
         end
         $display("Received byte: %02h at time %0t", data_out, $time);
 
-        @(negedge scl);
-        sda_tb_en   = 1;
-        sda_tb_data = ack;  // ack = 0 (ACK), ack = 1 (NACK)
-        @(posedge scl);
-        @(negedge scl);
-        sda_tb_en = 0;
+        send_ack(ack);
     endtask
+
 
 
     // Emulate slave sending one byte by driving SDA
     task send_i2c_byte(input logic [7:0] data_in);
         for (int i = 7; i >= 0; i--) begin
-            @(negedge scl);
-            sda_tb_en = 1;         // Enable testbench driver
+            @(negedge scl);  // Wait for SCL to go low
+            sda_tb_en = 1;    // Enable testbench driver
             sda_tb_data = data_in[i]; // Drive current bit
-            @(posedge scl);         // Let master sample the bit
+            @(posedge scl);   // Let master sample the bit
         end
-        // Release SDA after sending the byte so master can drive ACK/NACK
-        @(negedge scl);
-        sda_tb_en = 0;
+        
+        // should be recieve ack
+        //send_ack(ack);
     endtask
+
 
     // Emulate slave ACK/NACK response (ACK = 0, NACK = 1)
     task send_ack(input logic ack);
-        @(negedge scl);
-        sda_tb_en = 1;           // Enable driving
-        sda_tb_data = ack;       // Drive ACK/NACK bit
-        @(posedge scl);
-        @(negedge scl);
-        sda_tb_en = 0;           // Release SDA again
+        // Hold SDA low during middle of SCL low for ACK/NACK
+        @(negedge scl);     // Wait for SCL to go low
+        delay_ns(5000);     // Wait for half of the low time
+        sda_tb_en = 1;      // Drive ACK/NACK
+        sda_tb_data = ack;  // ACK (Set to 0 for ACK, 1 for NACK)
+        @(posedge scl); 
+        @(negedge scl);     // Release SDA after SCL goes low
+        delay_ns(5000);     
+        sda_tb_en = 0;
     endtask
 
     // === MAIN TEST === //
 
     initial begin
+
         $display("Starting I2C Master Testbench...");
         // Initialize signals
         rst = 0;

@@ -134,7 +134,7 @@ module I2C_Master #(
                     else 
                         next_state = IDLE;
                 end
-            STOP:       if ((scl_mid_tick == HIGH) && sda_out == 1) next_state = IDLE;
+            STOP:       if (busy == 0 && sda_out == 1) next_state = IDLE;
             default:    if (scl_mid_tick == HIGH) next_state = IDLE;
         endcase
     end
@@ -177,12 +177,16 @@ module I2C_Master #(
                 SEND_BIT: begin
                     if (scl_mid_tick == LOW) begin
                         if (I2C_write_read_mode == WRITE) begin
+                            sda_en <= 1;
+
                             // send bits
                             if (bit_cnt > 0) begin
                                 sda_out <= shift_reg[bit_cnt - 1];
                                 bit_cnt <= bit_cnt - 1;
                             end
                         end else if (I2C_write_read_mode == READ) begin
+                            sda_en <= 0;
+
                             // recieve bits
                             if (bit_cnt > 0) begin
                                 shift_reg[bit_cnt - 1] <= sda; // sample bits
@@ -211,7 +215,7 @@ module I2C_Master #(
                             if (byte_idx < data_len_tx) begin
                                 shift_reg <= data_tx[byte_idx];
                                 bit_cnt   <= 8;
-                                
+
                             end else if (write_read_reg == READ) begin
                                 I2C_write_read_mode <= READ;
                                 // Prepare for reading
@@ -239,9 +243,14 @@ module I2C_Master #(
                 end
 
                 STOP: begin
-                    if (scl_mid_tick == HIGH) begin
+                    // Pulls low and then high to simualte stop bit
+                    if (scl_mid_tick == LOW && busy == 1) begin
+                        sda_en  <= 1;
+                        sda_out <= 0;
+                    end else if (scl_mid_tick == HIGH) begin
                         sda_en  <= 1;
                         sda_out <= 1; // Send stop (SDA goes high while SCL is high)
+                        busy <= 0;
                     end
                 end
             endcase
