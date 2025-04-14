@@ -206,7 +206,10 @@ module I2C_Master #(
                             if (bit_cnt > 0) begin
                                 sda_out <= shift_reg[bit_cnt - 1];
                                 bit_cnt <= bit_cnt - 1;
+                            end else if (bit_cnt == 0 && I2C_write_read_mode == WRITE) begin
+                                sda_en <= 0; // release SDA before ACK
                             end
+
                         end
                         
                         // Sample in the middle of SCL HIGH phase
@@ -226,20 +229,20 @@ module I2C_Master #(
 
                 CHECK_ACK: begin
 
+                    if (scl_mid_tick == HIGH) begin
+                        ack_state <= (sda === 1'b1) ? NACK :
+                                    (sda === 1'b0) ? ACK : XACK;
+
+                        ack_error <= (ack_state == XACK) ? 1 : 0;
+                    end
+
+                    
+
+
                     if (scl_mid_tick == LOW) begin
                         
                         if (I2C_write_read_mode == WRITE) begin
                             sda_en <= 0; // Release SDA for ACK from slave
-
-                            // Uncomment to pass ACK in testbench
-                            //sda_en <= 1;
-                            //sda_out <= 0;
-
-                            // Comment line below to pass ACK in testbench
-                            //if (sda === 1'b1) ack_error <= 1;
-
-                            if (sda == 1) ack_state <= NACK;
-                            else if (sda == 0) ack_state <= ACK;
 
                             byte_idx_tx <= byte_idx_tx + 1; // Initial: Start at byte 2
 
