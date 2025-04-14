@@ -85,11 +85,11 @@ module i2c_master_PN532_tb;
         if (height == 1) begin
             @(negedge scl);
             wait(scl_mid_tick_in_tb == 1);
-            wait(scl_mid_tick_in_tb == 0);
+
         end else if (height == 2) begin
             @(posedge scl);
             wait(scl_mid_tick_in_tb == 2);
-            wait(scl_mid_tick_in_tb == 0);
+
         end
     endtask
 
@@ -201,8 +201,6 @@ module i2c_master_PN532_tb;
 
 
         // === 2. Read Example ===
-
-        /*
         data_tx[0] = 8'hDD; // example register address
 
         slave_addr    = 7'b0100100;
@@ -227,13 +225,6 @@ module i2c_master_PN532_tb;
         send_i2c_byte(8'b00010001, ack_master);
         
         wait (busy == 0);
-
-        */
-
-        // === 3. PN532 Read Example ===
-
-
-        
         
         $display("RX[0] = %02h, RX[1] = %02h", data_rx[0], data_rx[1]);
         if (ack_error)

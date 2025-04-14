@@ -95,6 +95,16 @@ module I2C_Master #(
 
     assign scl_mid_tick_obs = scl_mid_tick;
 
+    // --- ACK States ---
+    typedef enum logic [1:0] {
+        XACK,       // undetermined ACK
+        ACK,        // sda = 0
+        NACK        // sda = 1
+    } ack_t;
+
+    ack_t ack_state;
+
+
     always_ff @(posedge clk or negedge rst) begin
         if (!rst) begin
             scl_tick     <= 0;
@@ -131,14 +141,14 @@ module I2C_Master #(
                         next_state = CHECK_ACK;
             CHECK_ACK:  
                 if (scl_mid_tick == HIGH) begin
-                    if (sda == 0 && byte_idx_tx < data_len_tx && I2C_write_read_mode == WRITE)
-                        next_state = SEND_BIT;
-                    else if (sda == 0 && byte_idx_rx == 0 && I2C_write_read_mode == READ)
-                        next_state = START; // Re-start bit 
-                    else if (sda == 0 && byte_idx_rx < data_len_rx && I2C_write_read_mode == READ)
-                        next_state = SEND_BIT; // After re-start bit, actually move to reading
-                    else if (stop_bit)
+                    if (ack_state == NACK && stop_bit)
                         next_state = STOP;
+                    else if (ack_state == ACK && byte_idx_tx < data_len_tx && I2C_write_read_mode == WRITE)
+                        next_state = SEND_BIT;
+                    else if (ack_state == ACK && byte_idx_rx == 0 && I2C_write_read_mode == READ)
+                        next_state = START; // Re-start bit 
+                    else if (ack_state == ACK && byte_idx_rx < data_len_rx && I2C_write_read_mode == READ)
+                        next_state = SEND_BIT; // After re-start bit, actually move to reading
                     else 
                         next_state = IDLE;
                 end
@@ -158,6 +168,7 @@ module I2C_Master #(
             sda_en      <= 0;
             bit_cnt     <= 8;
             shift_reg   <= 0;
+            ack_state <= XACK;
         end 
             case (state)
                 IDLE: begin
@@ -167,6 +178,7 @@ module I2C_Master #(
                     byte_idx_rx <= 0;
                     sda_en      <= 0;
                     sda_out     <= 1;
+                    ack_state <= XACK;
                     write_read_reg <= WRITE; // default value
                     I2C_write_read_mode <= WRITE; // default value
                 end
@@ -201,15 +213,19 @@ module I2C_Master #(
                         if (I2C_write_read_mode == READ && scl_mid_tick == LOW) sda_en <= 0;
                         
                         if (I2C_write_read_mode == READ && scl_mid_tick == HIGH) begin
+
+
                             // recieve bits
                             if (bit_cnt > 0) begin
                                 shift_reg[bit_cnt - 1] <= sda; // sample bits
                                 bit_cnt <= bit_cnt - 1;
                             end
                         end
+                        ack_state <= XACK;
                 end
 
                 CHECK_ACK: begin
+
                     if (scl_mid_tick == LOW) begin
                         
                         if (I2C_write_read_mode == WRITE) begin
@@ -220,7 +236,10 @@ module I2C_Master #(
                             //sda_out <= 0;
 
                             // Comment line below to pass ACK in testbench
-                            if (sda === 1'b1) ack_error <= 1;
+                            //if (sda === 1'b1) ack_error <= 1;
+
+                            if (sda == 1) ack_state <= NACK;
+                            else if (sda == 0) ack_state <= ACK;
 
                             byte_idx_tx <= byte_idx_tx + 1; // Initial: Start at byte 2
 
