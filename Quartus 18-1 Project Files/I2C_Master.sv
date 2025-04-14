@@ -32,7 +32,9 @@ module I2C_Master #(
     output logic        busy,               // High while sending
     output logic        ack_error,          // High if any byte not ACK'd
     output logic        scl,          
-    inout  tri          sda                 // Tri-state SDA line
+    inout  tri          sda,                // Tri-state SDA line
+
+    output logic [1:0] scl_mid_tick_obs     // Obersving point for mtick
 
 );
 
@@ -65,7 +67,7 @@ module I2C_Master #(
     // --- Internal Signals ---
     state_t state, next_state;
     logic [7:0] shift_reg;
-    logic [3:0] bit_cnt, byte_idx;
+    logic [3:0] bit_cnt, byte_idx_tx, byte_idx_rx;
     logic sda_out, sda_en;
     logic scl_internal;
 
@@ -90,6 +92,8 @@ module I2C_Master #(
     assign scl_mid_tick = 
     ((scl_tick == CLK_DIV_HALF - 1) && scl_internal == 0) ? LOW : 
     ((scl_tick == CLK_DIV_HALF - 1) && scl_internal == 1) ? HIGH : OFF;
+
+    assign scl_mid_tick_obs = scl_mid_tick;
 
     always_ff @(posedge clk or negedge rst) begin
         if (!rst) begin
@@ -127,8 +131,12 @@ module I2C_Master #(
                         next_state = CHECK_ACK;
             CHECK_ACK:  
                 if (scl_mid_tick == HIGH) begin
-                    if (sda == 0 && byte_idx < data_len_tx && I2C_write_read_mode == WRITE)
+                    if (sda == 0 && byte_idx_tx < data_len_tx && I2C_write_read_mode == WRITE)
                         next_state = SEND_BIT;
+                    else if (sda == 0 && byte_idx_rx == 0 && I2C_write_read_mode == READ)
+                        next_state = START; // Re-start bit 
+                    else if (sda == 0 && byte_idx_rx < data_len_rx && I2C_write_read_mode == READ)
+                        next_state = SEND_BIT; // After re-start bit, actually move to reading
                     else if (stop_bit)
                         next_state = STOP;
                     else 
@@ -142,21 +150,23 @@ module I2C_Master #(
     // --- Control Logic ---
     always_ff @(posedge clk or posedge rst) begin
         if (!rst) begin
-            busy       <= 0;
-            ack_error  <= 0;
-            byte_idx   <= 0;
-            sda_out    <= 1;
-            sda_en     <= 0;
-            bit_cnt    <= 8;
-            shift_reg  <= 0;
+            busy        <= 0;
+            ack_error   <= 0;
+            byte_idx_tx <= 0;
+            byte_idx_rx <= 0;
+            sda_out     <= 1;
+            sda_en      <= 0;
+            bit_cnt     <= 8;
+            shift_reg   <= 0;
         end 
             case (state)
                 IDLE: begin
-                    busy      <= 0;
-                    ack_error <= 0;
-                    byte_idx  <= 0;
-                    sda_en    <= 0;
-                    sda_out   <= 1;
+                    busy        <= 0;
+                    ack_error   <= 0;
+                    byte_idx_tx <= 0;
+                    byte_idx_rx <= 0;
+                    sda_en      <= 0;
+                    sda_out     <= 1;
                     write_read_reg <= WRITE; // default value
                     I2C_write_read_mode <= WRITE; // default value
                 end
@@ -167,10 +177,12 @@ module I2C_Master #(
                         sda_en  <= 1;
                         sda_out <= 0; // pull SDA low
 
+                        // Prepare ADDR Write
+                        if (I2C_write_read_mode == WRITE) begin
                         shift_reg <= {slave_addr, write_read}; // 7-bit addr + write = 0, read = 1
                         write_read_reg <= write_read_t'(write_read); // store write or read operation bit
-                        I2C_write_read_mode <= WRITE;
                         bit_cnt   <= 8;
+                        end
                     end
                 end
 
@@ -209,29 +221,34 @@ module I2C_Master #(
                             // Comment line below to pass ACK in testbench
                             if (sda === 1'b1) ack_error <= 1;
 
-                            byte_idx <= byte_idx + 1; // Initial: Start at byte 2
+                            byte_idx_tx <= byte_idx_tx + 1; // Initial: Start at byte 2
 
                             // Prepare next byte to send if there is any
-                            if (byte_idx < data_len_tx) begin
-                                shift_reg <= data_tx[byte_idx];
+                            if (byte_idx_tx < data_len_tx) begin
+                                shift_reg <= data_tx[byte_idx_tx];
                                 bit_cnt   <= 8;
 
-                            end else if (write_read_reg == READ) begin
-                                I2C_write_read_mode <= READ;
-                                // Prepare for reading
-                                shift_reg <= 0;
-                                byte_idx <= 0;
-                                bit_cnt <= 8;
+                                // On the last byte, switch to read mode
+                                if (byte_idx_tx + 1 >= data_len_tx && write_read_reg == READ) begin
+                                    I2C_write_read_mode <= READ;
+
+                                    // Prepare for reading
+                                    shift_reg <= 0;
+                                    byte_idx_rx <= 0;
+                                end
+
                             end
+                            
+
                         end else if (I2C_write_read_mode == READ) begin
                             // ...
                             // read code here (master controls ack)
                             // ...
 
-                            if (byte_idx < data_len_rx) begin
-                                data_rx[byte_idx] <= shift_reg;
+                            if (byte_idx_rx < data_len_rx) begin
+                                data_rx[byte_idx_rx] <= shift_reg;
                                 bit_cnt   <= 8;
-                                byte_idx <= byte_idx + 1; // Increment index of data_tx
+                                byte_idx_rx <= byte_idx_rx + 1; // Increment index of data_tx
 
                                 sda_en <= 1;
                                 sda_out <= 0; // ACK

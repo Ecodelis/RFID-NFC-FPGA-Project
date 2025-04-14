@@ -21,6 +21,9 @@ module i2c_master_PN532_tb;
     logic scl;
 
     logic [7:0] data[0:7]; // 8 bytes
+    logic ack_master;
+    logic [1:0] scl_mid_tick_obs;
+    wire scl_mid_tick_in_tb = scl_mid_tick_obs; // for observing scl_mid_tick (1 == LOW, 2 == HIGH)
     
     // SDA line (bidirectional) with pullup
     tri sda;
@@ -56,7 +59,8 @@ module i2c_master_PN532_tb;
         .busy(busy),
         .ack_error(ack_error),
         .scl(scl),
-        .sda(sda)
+        .sda(sda),
+        .scl_mid_tick_obs(scl_mid_tick_obs)
     );
 
     // === TASKS === //
@@ -76,6 +80,13 @@ module i2c_master_PN532_tb;
         $display("START condition detected at time %0t", $time);
     endtask
 
+    task wait_for_mid_tick_low();
+        @(posedge scl); 
+        @(negedge scl);
+        wait(scl_mid_tick_in_tb == 1);
+        wait(scl_mid_tick_in_tb == 0);      // Master drives ACK/NACK here
+    endtask
+
     // Receive one byte from SDA (sampled on SCL rising edge)
     task receive_i2c_byte(output logic [7:0] data_out, input logic ack);
         data_out = 8'h00;
@@ -91,31 +102,44 @@ module i2c_master_PN532_tb;
 
 
     // Emulate slave sending one byte by driving SDA
-    task send_i2c_byte(input logic [7:0] data_in);
+    task send_i2c_byte(input logic [7:0] data_in, output logic ack_out);
         for (int i = 7; i >= 0; i--) begin
-            @(negedge scl);  // Wait for SCL to go low
-            sda_tb_en = 1;    // Enable testbench driver
-            sda_tb_data = data_in[i]; // Drive current bit
-            @(posedge scl);   // Let master sample the bit
+            wait_for_mid_tick_low();
+            sda_tb_en = 1;
+            sda_tb_data = data_in[i];
         end
-        
-        // should be recieve ack
-        //send_ack(ack);
+
+        $display("Sent byte: %02h at time %0t", data_in, $time);
+
+        receive_ack(ack_out); // Call the task to get ACK from master
     endtask
+
 
 
     // Emulate slave ACK/NACK response (ACK = 0, NACK = 1)
     task send_ack(input logic ack);
         // Hold SDA low during middle of SCL low for ACK/NACK
-        @(negedge scl);     // Wait for SCL to go low
-        delay_ns(5000);     // Wait for half of the low time
+        @(negedge scl);
+        wait(scl_mid_tick_in_tb == 1);
+        wait(scl_mid_tick_in_tb == 0);
         sda_tb_en = 1;      // Drive ACK/NACK
         sda_tb_data = ack;  // ACK (Set to 0 for ACK, 1 for NACK)
-        @(posedge scl); 
-        @(negedge scl);     // Release SDA after SCL goes low
-        delay_ns(5000);     
+        wait_for_mid_tick_low();
         sda_tb_en = 0;
     endtask
+
+    // Wait for ACK from master after sending a byte
+    task receive_ack(output logic ack_bit);
+        @(negedge scl);      // Start of ACK bit period
+        sda_tb_en = 0;       // Release SDA so master can drive it
+
+        wait_for_mid_tick_low();
+        ack_bit = sda_in_tb; // Read ACK (0 = ACK, 1 = NACK)
+
+        $display("Received %s from master at time %0t", 
+                (ack_bit == 0) ? "ACK" : "NACK", $time);
+    endtask
+
 
     // === MAIN TEST === //
 
@@ -145,8 +169,10 @@ module i2c_master_PN532_tb;
         data_tx[6] = 8'h02;
         data_tx[7] = 8'h00;
 
+
+/*
         slave_addr    = 7'b0100100;  // PN532 = 0x24
-        data_len_tx   = 2;
+        data_len_tx   = 3;
         write_or_read = 0; // write
         stop_bit      = 1;
         mode          = 0;
@@ -155,39 +181,42 @@ module i2c_master_PN532_tb;
         #40 start = 0;
 
         wait (busy == 1);
+        //wait_for_start();
 
         // === ACK for master write ===
         // Wait for first byte (slave address + write bit)
-        receive_i2c_byte(data[0], 0); // send ACK after this byte
+        receive_i2c_byte(data[0], 0);
 
         // Wait for second byte (data)
-        receive_i2c_byte(data[1], 0); // send ACK again
+        receive_i2c_byte(data[1], 0);
 
         wait (busy == 0);
-
+*/
 
 
         // === 2. Read Example ===
-        data_tx[0] = 8'hDD;
-        data_tx[1] = 8'h22;
+        data_tx[0] = 8'hDD; // example register address
 
-        slave_addr    = 7'b1010101;
+        slave_addr    = 7'b0100100;
         data_len_tx   = 2;
         data_len_rx   = 2;
         write_or_read = 1; // read operation
         stop_bit      = 1;
+        mode = 1;
         
         #20 start = 1;
         #40 start = 0;
         
         wait (busy == 1);
-        wait_for_start();
+        //wait_for_start();
+
+        // Master writing to slave register
+        receive_i2c_byte(data[0], 0); // address
+        receive_i2c_byte(data[1], 0); // preamble
         
         // Emulate slave sending two bytes:
-        send_i2c_byte(8'hA5);
-        send_ack(0); // ACK (drive 0)
-        send_i2c_byte(8'h5A);
-        send_ack(1); // NACK (drive 1) for last byte
+        send_i2c_byte(8'hA5, ack_master);
+        send_i2c_byte(8'h5A, ack_master);
         
         wait (busy == 0);
         
