@@ -3,26 +3,63 @@
 // Author: Marcus Fu
 // Date: 2024-04-05
 
+// when reading use data_len_tx to write # of bytes. After
+// sending required, instead of stopping, if write_read == READ
+// go to read mode where u sample and ack until NACK and then issue stop
+// implement time out if never send ACK after waiting some time (50ms)
+
+
+
 module I2C_Master #(
     parameter FPGA_CLK_FREQ = 50_000_000, // Default FPGA clock: 50 MHz
-    parameter I2C_FREQ = 100_000          // Default I2C Standard Mode clock: 100 kHz
+    parameter I2C_FREQ = 100_000,         // Default I2C Standard Mode clock: 100 kHz
+    parameter TX_SIZE = 32, 
+    parameter RX_SIZE = 64
 )(
     input  logic        clk,
     input  logic        rst,
-    input  logic        start,           // Trigger transmission
-    input  logic [6:0]  slave_addr,      // 7-bit I2C address
-    input  logic [7:0]  data_in[32],     // Byte array to send
-    input  logic [5:0]  data_len,        // Number of bytes
-    input logic write_or_read,           // write/read bit (0/1)
-    output logic        busy,            // High while sending
-    output logic        ack_error,       // High if any byte not ACK'd
-    output logic        scl,
-    inout  tri          sda              // Tri-state SDA line
+    input  logic        start,              // Trigger transmission
+    input  logic [6:0]  slave_addr,         // 7-bit I2C address
+    input  logic [7:0]  data_tx [TX_SIZE],  // Up to 32 Byte array to send
+    input  logic [5:0]  data_len_tx,        // Number of bytes to send
+    output logic [7:0]  data_rx [RX_SIZE],  // Up to 64 bytes to recieve
+    input  logic [5:0]  data_len_rx,        // Number of bytes to recieve
+
+    input logic         write_read,         // write/read operation bit (0/1)
+    input logic         stop_bit,           // Goes back to IDLE without a stop bit if 0
+    input logic         mode,               // I2C MODE
+
+    output logic        busy,               // High while sending
+    output logic        ack_error,          // High if any byte not ACK'd
+    output logic        scl,          
+    inout  tri          sda                 // Tri-state SDA line
+
 );
+
+
+    // --- I2C Modes ---
+    typedef enum logic {
+        NORMAL,
+        PN532        // Sent with write_read = 1. If ACK is sent after address byte polling, initiate re-start into read
+    } I2CMODE_t;
+
+    I2CMODE_t I2CMODE;
+
+    // --- write or read register ---
+    typedef enum logic {
+        WRITE,
+        READ
+    } write_read_t;
+
+    write_read_t write_read_reg, I2C_write_read_mode;
 
     // --- States ---
     typedef enum logic [2:0] {
-        IDLE, START, SEND_BIT, CHECK_ACK, STOP
+        IDLE, 
+        START, 
+        SEND_BIT, 
+        CHECK_ACK, 
+        STOP
     } state_t;
 
     // --- Internal Signals ---
@@ -32,7 +69,7 @@ module I2C_Master #(
     logic sda_out, sda_en;
     logic scl_internal;
 
-    // Assign output signals
+    // --- Assign output signals ---
     assign scl = scl_internal;
     assign sda = sda_en ? sda_out : 1'bz;
 
@@ -79,16 +116,24 @@ module I2C_Master #(
     always_comb begin
         next_state = state;
         case (state)
-            IDLE:       if (start)             next_state = START;
-            START:      if (sda_out == 0 && scl_internal == 0)   
-                            next_state = SEND_BIT;
-            SEND_BIT:   if (scl_mid_tick == HIGH)    if (bit_cnt == 0)  next_state = CHECK_ACK;
-            CHECK_ACK:  if (scl_mid_tick == HIGH) begin
-                            if (sda == 0 && byte_idx < data_len)
-                                next_state = SEND_BIT;
-                            else  
-                                next_state = STOP;
-                        end
+            IDLE:       
+                if (start)  next_state = START;
+            START:      
+                if (sda_out == 0 && scl_internal == 0)   
+                    next_state = SEND_BIT;
+            SEND_BIT:   
+                if (scl_mid_tick == HIGH)    
+                    if (bit_cnt == 0)  
+                        next_state = CHECK_ACK;
+            CHECK_ACK:  
+                if (scl_mid_tick == HIGH) begin
+                    if (sda == 0 && byte_idx < data_len_tx && I2C_write_read_mode == WRITE)
+                        next_state = SEND_BIT;
+                    else if (stop_bit)
+                        next_state = STOP;
+                    else 
+                        next_state = IDLE;
+                end
             STOP:       if ((scl_mid_tick == HIGH) && sda_out == 1) next_state = IDLE;
             default:    if (scl_mid_tick == HIGH) next_state = IDLE;
         endcase
@@ -112,44 +157,83 @@ module I2C_Master #(
                     byte_idx  <= 0;
                     sda_en    <= 0;
                     sda_out   <= 1;
+                    write_read_reg <= WRITE; // default value
+                    I2C_write_read_mode <= WRITE; // default value
                 end
 
                 START: begin
                     if (scl_mid_tick == HIGH) begin
                         busy    <= 1;
                         sda_en  <= 1;
-                        sda_out <= 0; // Pull SDA low
+                        sda_out <= 0; // pull SDA low
 
-                        shift_reg <= {slave_addr, write_or_read}; // 7-bit addr + write = 0, read = 1
+                        shift_reg <= {slave_addr, write_read}; // 7-bit addr + write = 0, read = 1
+                        write_read_reg <= write_read_t'(write_read); // store write or read operation bit
+                        I2C_write_read_mode <= WRITE;
                         bit_cnt   <= 8;
                     end
                 end
 
                 SEND_BIT: begin
                     if (scl_mid_tick == LOW) begin
-                        if (bit_cnt > 1) sda_out <= shift_reg[bit_cnt - 1];
-                        if (bit_cnt > 0) bit_cnt <= bit_cnt - 1;
+                        if (I2C_write_read_mode == WRITE) begin
+                            // send bits
+                            if (bit_cnt > 0) begin
+                                sda_out <= shift_reg[bit_cnt - 1];
+                                bit_cnt <= bit_cnt - 1;
+                            end
+                        end else if (I2C_write_read_mode == READ) begin
+                            // recieve bits
+                            if (bit_cnt > 0) begin
+                                shift_reg[bit_cnt - 1] <= sda; // sample bits
+                                bit_cnt <= bit_cnt - 1;
+                            end
+                        end
                     end
                 end
 
                 CHECK_ACK: begin
                     if (scl_mid_tick == LOW) begin
-                        sda_en <= 0; // Release SDA for ACK from slave
+                        
+                        if (I2C_write_read_mode == WRITE) begin
+                            sda_en <= 0; // Release SDA for ACK from slave
 
-                        // Uncomment to pass ACK in testbench
-                        sda_en <= 1;
-                        sda_out <= 0;
+                            // Uncomment to pass ACK in testbench
+                            //sda_en <= 1;
+                            //sda_out <= 0;
 
-                        // Comment line below to pass ACK in testbench
-                        //if (sda === 1'b1) ack_error <= 1;
+                            // Comment line below to pass ACK in testbench
+                            if (sda === 1'b1) ack_error <= 1;
 
-                        byte_idx <= byte_idx + 1;
+                            byte_idx <= byte_idx + 1; // Initial: Start at byte 2
 
-                        // Prepare next byte to send if there is any
-                        if (byte_idx < data_len) begin
-                            shift_reg <= data_in[byte_idx];
-                            bit_cnt   <= 8;
-                        end
+                            // Prepare next byte to send if there is any
+                            if (byte_idx < data_len_tx) begin
+                                shift_reg <= data_tx[byte_idx];
+                                bit_cnt   <= 8;
+                                
+                            end else if (write_read_reg == READ) begin
+                                I2C_write_read_mode <= READ;
+                                // Prepare for reading
+                                shift_reg <= 0;
+                                byte_idx <= 0;
+                                bit_cnt <= 8;
+                            end
+                        end else if (I2C_write_read_mode == READ) begin
+                            // ...
+                            // read code here (master controls ack)
+                            // ...
+
+                            if (byte_idx < data_len_rx) begin
+                                data_rx[byte_idx] <= shift_reg;
+                                bit_cnt   <= 8;
+                                byte_idx <= byte_idx + 1; // Increment index of data_tx
+
+                                sda_en <= 1;
+                                sda_out <= 0; // ACK
+                            end 
+
+                        end else ack_error <= 1; // kinda useless
 
                     end
                 end
