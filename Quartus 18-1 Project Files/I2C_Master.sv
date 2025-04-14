@@ -187,8 +187,7 @@ module I2C_Master #(
                 end
 
                 SEND_BIT: begin
-                    if (scl_mid_tick == LOW) begin
-                        if (I2C_write_read_mode == WRITE) begin
+                        if (I2C_write_read_mode == WRITE && scl_mid_tick == LOW) begin
                             sda_en <= 1;
 
                             // send bits
@@ -196,16 +195,18 @@ module I2C_Master #(
                                 sda_out <= shift_reg[bit_cnt - 1];
                                 bit_cnt <= bit_cnt - 1;
                             end
-                        end else if (I2C_write_read_mode == READ) begin
-                            sda_en <= 0;
-
+                        end
+                        
+                        // Sample in the middle of SCL HIGH phase
+                        if (I2C_write_read_mode == READ && scl_mid_tick == LOW) sda_en <= 0;
+                        
+                        if (I2C_write_read_mode == READ && scl_mid_tick == HIGH) begin
                             // recieve bits
                             if (bit_cnt > 0) begin
                                 shift_reg[bit_cnt - 1] <= sda; // sample bits
                                 bit_cnt <= bit_cnt - 1;
                             end
                         end
-                    end
                 end
 
                 CHECK_ACK: begin

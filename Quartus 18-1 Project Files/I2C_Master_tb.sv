@@ -80,15 +80,21 @@ module i2c_master_PN532_tb;
         $display("START condition detected at time %0t", $time);
     endtask
 
-    task wait_for_mid_tick_low();
-        @(posedge scl); 
-        @(negedge scl);
-        wait(scl_mid_tick_in_tb == 1);
-        wait(scl_mid_tick_in_tb == 0);      // Master drives ACK/NACK here
+    // 1 for LOW, 2 for HIGH
+    task wait_for_mid_tick(input logic height);
+        if (height == 1) begin
+            @(negedge scl);
+            wait(scl_mid_tick_in_tb == 1);
+            wait(scl_mid_tick_in_tb == 0);
+        end else if (height == 2) begin
+            @(posedge scl);
+            wait(scl_mid_tick_in_tb == 2);
+            wait(scl_mid_tick_in_tb == 0);
+        end
     endtask
 
     // Receive one byte from SDA (sampled on SCL rising edge)
-    task receive_i2c_byte(output logic [7:0] data_out, input logic ack);
+    task receive_i2c_byte(output logic [7:0] data_out, input logic ack_in);
         data_out = 8'h00;
         for (int i = 0; i < 8; i++) begin
             @(posedge scl);
@@ -96,7 +102,7 @@ module i2c_master_PN532_tb;
         end
         $display("Received byte: %02h at time %0t", data_out, $time);
 
-        send_ack(ack);
+        send_ack(ack_in);
     endtask
 
 
@@ -104,7 +110,7 @@ module i2c_master_PN532_tb;
     // Emulate slave sending one byte by driving SDA
     task send_i2c_byte(input logic [7:0] data_in, output logic ack_out);
         for (int i = 7; i >= 0; i--) begin
-            wait_for_mid_tick_low();
+            wait_for_mid_tick(1);
             sda_tb_en = 1;
             sda_tb_data = data_in[i];
         end
@@ -117,14 +123,14 @@ module i2c_master_PN532_tb;
 
 
     // Emulate slave ACK/NACK response (ACK = 0, NACK = 1)
-    task send_ack(input logic ack);
+    task send_ack(input logic ack_in);
         // Hold SDA low during middle of SCL low for ACK/NACK
         @(negedge scl);
         wait(scl_mid_tick_in_tb == 1);
         wait(scl_mid_tick_in_tb == 0);
         sda_tb_en = 1;      // Drive ACK/NACK
-        sda_tb_data = ack;  // ACK (Set to 0 for ACK, 1 for NACK)
-        wait_for_mid_tick_low();
+        sda_tb_data = ack_in;  // ACK (Set to 0 for ACK, 1 for NACK)
+        wait_for_mid_tick(1);
         sda_tb_en = 0;
     endtask
 
@@ -133,7 +139,7 @@ module i2c_master_PN532_tb;
         @(negedge scl);      // Start of ACK bit period
         sda_tb_en = 0;       // Release SDA so master can drive it
 
-        wait_for_mid_tick_low();
+        wait_for_mid_tick(2);
         ack_bit = sda_in_tb; // Read ACK (0 = ACK, 1 = NACK)
 
         $display("Received %s from master at time %0t", 
@@ -195,6 +201,8 @@ module i2c_master_PN532_tb;
 
 
         // === 2. Read Example ===
+
+        /*
         data_tx[0] = 8'hDD; // example register address
 
         slave_addr    = 7'b0100100;
@@ -215,10 +223,17 @@ module i2c_master_PN532_tb;
         receive_i2c_byte(data[1], 0); // preamble
         
         // Emulate slave sending two bytes:
-        send_i2c_byte(8'hA5, ack_master);
-        send_i2c_byte(8'h5A, ack_master);
+        send_i2c_byte(8'b10101010, ack_master);
+        send_i2c_byte(8'b00010001, ack_master);
         
         wait (busy == 0);
+
+        */
+
+        // === 3. PN532 Read Example ===
+
+
+        
         
         $display("RX[0] = %02h, RX[1] = %02h", data_rx[0], data_rx[1]);
         if (ack_error)
