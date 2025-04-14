@@ -216,8 +216,6 @@ module I2C_Master #(
                         if (I2C_write_read_mode == READ && scl_mid_tick == LOW) sda_en <= 0;
                         
                         if (I2C_write_read_mode == READ && scl_mid_tick == HIGH) begin
-
-
                             // recieve bits
                             if (bit_cnt > 0) begin
                                 shift_reg[bit_cnt - 1] <= sda; // sample bits
@@ -229,7 +227,7 @@ module I2C_Master #(
 
                 CHECK_ACK: begin
 
-                    if (scl_mid_tick == HIGH) begin
+                    if (scl_mid_tick == OFF) begin
                         ack_state <= (sda === 1'b1) ? NACK :
                                     (sda === 1'b0) ? ACK : XACK;
 
