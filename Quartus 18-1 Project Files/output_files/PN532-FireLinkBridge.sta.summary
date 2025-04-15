@@ -1,0 +1,133 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1100mV 85C Model Setup 'CLOCK_50'
+Slack : -12.790
+TNS   : -2307.345
+
+Type  : Slow 1100mV 85C Model Setup 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -9.165
+TNS   : -173.548
+
+Type  : Slow 1100mV 85C Model Hold 'CLOCK_50'
+Slack : 0.353
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Hold 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : 1.122
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Recovery 'CLOCK_50'
+Slack : -0.724
+TNS   : -4.316
+
+Type  : Slow 1100mV 85C Model Removal 'CLOCK_50'
+Slack : 0.588
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -3.000
+TNS   : -344.324
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -0.922
+TNS   : -33.230
+
+Type  : Slow 1100mV 0C Model Setup 'CLOCK_50'
+Slack : -12.595
+TNS   : -2292.456
+
+Type  : Slow 1100mV 0C Model Setup 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -9.071
+TNS   : -172.339
+
+Type  : Slow 1100mV 0C Model Hold 'CLOCK_50'
+Slack : 0.207
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Hold 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : 1.012
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Recovery 'CLOCK_50'
+Slack : -0.670
+TNS   : -3.766
+
+Type  : Slow 1100mV 0C Model Removal 'CLOCK_50'
+Slack : 0.540
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -3.000
+TNS   : -350.766
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -0.843
+TNS   : -32.611
+
+Type  : Fast 1100mV 85C Model Setup 'CLOCK_50'
+Slack : -6.888
+TNS   : -1220.399
+
+Type  : Fast 1100mV 85C Model Setup 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -5.517
+TNS   : -99.596
+
+Type  : Fast 1100mV 85C Model Hold 'CLOCK_50'
+Slack : 0.180
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Hold 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : 0.719
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Recovery 'CLOCK_50'
+Slack : -0.041
+TNS   : -0.041
+
+Type  : Fast 1100mV 85C Model Removal 'CLOCK_50'
+Slack : 0.315
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -2.225
+TNS   : -227.989
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -0.540
+TNS   : -11.012
+
+Type  : Fast 1100mV 0C Model Setup 'CLOCK_50'
+Slack : -6.197
+TNS   : -1101.954
+
+Type  : Fast 1100mV 0C Model Setup 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -4.943
+TNS   : -90.221
+
+Type  : Fast 1100mV 0C Model Hold 'CLOCK_50'
+Slack : 0.170
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Hold 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : 0.672
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Recovery 'CLOCK_50'
+Slack : 0.052
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Removal 'CLOCK_50'
+Slack : 0.284
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -2.225
+TNS   : -227.869
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'I2C_Master:i2c_master_inst|scl_tick[0]'
+Slack : -0.396
+TNS   : -6.839
+
+------------------------------------------------------------

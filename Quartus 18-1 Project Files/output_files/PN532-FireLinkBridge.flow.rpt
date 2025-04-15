@@ -1,5 +1,5 @@
 Flow report for PN532-FireLinkBridge
-Wed Apr 02 15:33:51 2025
+Mon Apr 14 21:18:04 2025
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -37,24 +37,29 @@ refer to the applicable agreement for further details.
 
 
 
-+---------------------------------------------------------------------------+
-; Flow Summary                                                              ;
-+-----------------------------+---------------------------------------------+
-; Flow Status                 ; Flow Failed - Wed Apr 02 15:33:51 2025      ;
-; Quartus Prime Version       ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
-; Revision Name               ; PN532-FireLinkBridge                        ;
-; Top-level Entity Name       ; PN532_FireLink_Bridge                       ;
-; Family                      ; Cyclone V                                   ;
-; Device                      ; 5CSEMA4U23C6                                ;
-; Timing Models               ; Final                                       ;
-; Logic utilization (in ALMs) ; N/A until Partition Merge                   ;
-; Total registers             ; N/A until Partition Merge                   ;
-; Total pins                  ; N/A until Partition Merge                   ;
-; Total virtual pins          ; N/A until Partition Merge                   ;
-; Total block memory bits     ; N/A until Partition Merge                   ;
-; Total PLLs                  ; N/A until Partition Merge                   ;
-; Total DLLs                  ; N/A until Partition Merge                   ;
-+-----------------------------+---------------------------------------------+
++-------------------------------------------------------------------------------+
+; Flow Summary                                                                  ;
++---------------------------------+---------------------------------------------+
+; Flow Status                     ; Successful - Mon Apr 14 21:17:54 2025       ;
+; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
+; Revision Name                   ; PN532-FireLinkBridge                        ;
+; Top-level Entity Name           ; PN532_FireLink_Bridge                       ;
+; Family                          ; Cyclone V                                   ;
+; Device                          ; 5CSEMA4U23C6                                ;
+; Timing Models                   ; Final                                       ;
+; Logic utilization (in ALMs)     ; 243 / 15,880 ( 2 % )                        ;
+; Total registers                 ; 119                                         ;
+; Total pins                      ; 20 / 314 ( 6 % )                            ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 0 / 2,764,800 ( 0 % )                       ;
+; Total DSP Blocks                ; 6 / 84 ( 7 % )                              ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0 / 5 ( 0 % )                               ;
+; Total DLLs                      ; 0 / 4 ( 0 % )                               ;
++---------------------------------+---------------------------------------------+
 
 
 +------------------------------------------+
@@ -62,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+----------------------+
 ; Option            ; Setting              ;
 +-------------------+----------------------+
-; Start date & time ; 04/02/2025 15:33:36  ;
+; Start date & time ; 04/14/2025 21:16:26  ;
 ; Main task         ; Compilation          ;
 ; Revision Name     ; PN532-FireLinkBridge ;
 +-------------------+----------------------+
@@ -73,7 +78,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+----------------------------------------+----------------------+-----------------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value        ; Entity Name           ; Section Id ;
 +-------------------------------------+----------------------------------------+----------------------+-----------------------+------------+
-; COMPILER_SIGNATURE_ID               ; 18301349928591.174363321513608         ; --                   ; --                    ; --         ;
+; COMPILER_SIGNATURE_ID               ; 18301349928591.174469058507632         ; --                   ; --                    ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --                   ; --                    ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --                   ; --                    ; --         ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --                   ; PN532_FireLink_Bridge ; Top        ;
@@ -91,8 +96,11 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:16     ; 1.0                     ; 4773 MB             ; 00:00:37                           ;
-; Total                ; 00:00:16     ; --                      ; --                  ; 00:00:37                           ;
+; Analysis & Synthesis ; 00:00:15     ; 1.0                     ; 4839 MB             ; 00:00:33                           ;
+; Fitter               ; 00:01:06     ; 1.1                     ; 6367 MB             ; 00:02:13                           ;
+; Assembler            ; 00:00:05     ; 1.0                     ; 4828 MB             ; 00:00:06                           ;
+; Timing Analyzer      ; 00:00:09     ; 1.5                     ; 5087 MB             ; 00:00:11                           ;
+; Total                ; 00:01:35     ; --                      ; --                  ; 00:03:03                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -102,6 +110,9 @@ refer to the applicable agreement for further details.
 ; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +----------------------+------------------+------------+------------+----------------+
 ; Analysis & Synthesis ; EcosPC           ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; EcosPC           ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; EcosPC           ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; EcosPC           ; Windows 10 ; 10.0       ; x86_64         ;
 +----------------------+------------------+------------+------------+----------------+
 
 
@@ -109,6 +120,9 @@ refer to the applicable agreement for further details.
 ; Flow Log ;
 ------------
 quartus_map --read_settings_files=on --write_settings_files=off PN532-FireLinkBridge -c PN532-FireLinkBridge
+quartus_fit --read_settings_files=off --write_settings_files=off PN532-FireLinkBridge -c PN532-FireLinkBridge
+quartus_asm --read_settings_files=off --write_settings_files=off PN532-FireLinkBridge -c PN532-FireLinkBridge
+quartus_sta PN532-FireLinkBridge -c PN532-FireLinkBridge
 
 
 

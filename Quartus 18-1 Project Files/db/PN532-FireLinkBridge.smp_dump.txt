@@ -1,0 +1,8 @@
+
+State Machine - |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|state
+Name state.CHECK_ACK state.SEND_BIT state.START state.IDLE state.STOP 
+state.IDLE 0 0 0 0 0 
+state.START 0 0 1 1 0 
+state.SEND_BIT 0 1 0 1 0 
+state.CHECK_ACK 1 0 0 1 0 
+state.STOP 0 0 0 1 1 

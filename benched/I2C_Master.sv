@@ -119,7 +119,7 @@ module I2C_Master #(
     end
 
     // --- State Register ---
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk or negedge rst) begin
         if (!rst)
             state <= IDLE;
         else
@@ -158,7 +158,7 @@ module I2C_Master #(
     end
 
     // --- Control Logic ---
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk or negedge rst) begin
         if (!rst) begin
             busy        <= 0;
             ack_error   <= 0;
@@ -186,8 +186,8 @@ module I2C_Master #(
                 START: begin
                     if (scl_mid_tick == HIGH) begin
                         busy    <= 1;
-                        sda_en  <= 1;
-                        sda_out <= 0; // pull SDA low
+                        //sda_en <= 1;
+                        //sda_out <= 0; // pull SDA low
 
                         // Prepare ADDR Write
                         if (I2C_write_read_mode == WRITE) begin

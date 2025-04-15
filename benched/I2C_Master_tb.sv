@@ -173,6 +173,7 @@ endtask
         
         #40 rst = 1; // Release reset
 
+/*
         // === 1. Write Command Frame to PN532 ===
         data_tx[0] = 8'h00; // Preamble
         data_tx[1] = 8'h00;
@@ -184,7 +185,6 @@ endtask
         data_tx[7] = 8'h00;
 
 
-/*
         slave_addr    = 7'b0100100;  // PN532 = 0x24
         data_len_tx   = 3;
         write_or_read = 0; // write
@@ -209,6 +209,8 @@ endtask
 
 
         // === 2. Read Example ===
+
+        /*
         data_tx[0] = 8'hDD; // example register address
 
         slave_addr    = 7'b0100100;
@@ -234,9 +236,52 @@ endtask
         
         wait (busy == 0);
 
-
+*/
 
         // === 3. Polling for Pn532 read ===
+
+
+        // === Simulate what PN532_FireLink_Bridge does ===
+$display("=== Simulating PN532_FireLink_Bridge frame ===");
+
+// Reset logic
+rst = 0;
+sda_tb_en = 0;
+start = 0;
+#40 rst = 1; // Release reset
+#40;
+
+// Send PN532 command frame
+data_tx[0] = 8'h00; // Preamble
+data_tx[1] = 8'h00;
+data_tx[2] = 8'hFF;
+data_tx[3] = 8'h02;
+data_tx[4] = 8'hFE;
+data_tx[5] = 8'hD4;
+data_tx[6] = 8'h02;
+data_tx[7] = 8'h00;
+
+slave_addr    = 7'b0100100;  // PN532 I2C address = 0x24
+data_len_tx   = 8;           // Send full 8-byte command frame
+write_or_read = 0;           // Write operation
+stop_bit      = 1;
+mode          = 0;           // Normal mode
+
+// Trigger I2C start
+#20 start = 1;
+#20 start = 0;
+
+// Wait for busy to go high and back low (transaction duration)
+wait (busy == 1);
+wait (busy == 0);
+
+$display("Frame transmission complete.");
+if (ack_error)
+    $display("ACK error occurred during I2C transmission");
+else
+    $display("I2C command frame written successfully");
+
+$stop;
         
 
         

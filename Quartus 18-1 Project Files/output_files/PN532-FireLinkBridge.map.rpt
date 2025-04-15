@@ -1,5 +1,5 @@
 Analysis & Synthesis report for PN532-FireLinkBridge
-Wed Apr 02 15:33:51 2025
+Mon Apr 14 21:16:40 2025
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -10,7 +10,24 @@ Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
   4. Parallel Compilation
-  5. Analysis & Synthesis Messages
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis DSP Block Usage Summary
+  9. State Machine - |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|state
+ 10. User-Specified and Inferred Latches
+ 11. Registers Removed During Synthesis
+ 12. General Register Statistics
+ 13. Inverted Register Statistics
+ 14. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 15. Source assignments for Top-level Entity: |PN532_FireLink_Bridge
+ 16. Parameter Settings for User Entity Instance: tonegen:tonegen_1
+ 17. Parameter Settings for User Entity Instance: I2C_Master:i2c_master_inst
+ 18. Port Connectivity Checks: "I2C_Master:i2c_master_inst"
+ 19. Post-Synthesis Netlist Statistics for Top Partition
+ 20. Elapsed Time Per Partition
+ 21. Analysis & Synthesis Messages
+ 22. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -33,22 +50,27 @@ refer to the applicable agreement for further details.
 
 
 
-+---------------------------------------------------------------------------+
-; Analysis & Synthesis Summary                                              ;
-+-----------------------------+---------------------------------------------+
-; Analysis & Synthesis Status ; Failed - Wed Apr 02 15:33:51 2025           ;
-; Quartus Prime Version       ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
-; Revision Name               ; PN532-FireLinkBridge                        ;
-; Top-level Entity Name       ; PN532_FireLink_Bridge                       ;
-; Family                      ; Cyclone V                                   ;
-; Logic utilization (in ALMs) ; N/A until Partition Merge                   ;
-; Total registers             ; N/A until Partition Merge                   ;
-; Total pins                  ; N/A until Partition Merge                   ;
-; Total virtual pins          ; N/A until Partition Merge                   ;
-; Total block memory bits     ; N/A until Partition Merge                   ;
-; Total PLLs                  ; N/A until Partition Merge                   ;
-; Total DLLs                  ; N/A until Partition Merge                   ;
-+-----------------------------+---------------------------------------------+
++-------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                  ;
++---------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Mon Apr 14 21:16:40 2025       ;
+; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
+; Revision Name                   ; PN532-FireLinkBridge                        ;
+; Top-level Entity Name           ; PN532_FireLink_Bridge                       ;
+; Family                          ; Cyclone V                                   ;
+; Logic utilization (in ALMs)     ; N/A                                         ;
+; Total registers                 ; 115                                         ;
+; Total pins                      ; 20                                          ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 0                                           ;
+; Total DSP Blocks                ; 6                                           ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0                                           ;
+; Total DLLs                      ; 0                                           ;
++---------------------------------+---------------------------------------------+
 
 
 +--------------------------------------------------------------------------------------------------------------------------------+
@@ -147,11 +169,313 @@ refer to the applicable agreement for further details.
 ; Maximum allowed            ; 4           ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 1           ;
+; Maximum used               ; 4           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
 +----------------------------+-------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                       ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                                   ; Library ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+; tonegen.sv                       ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/tonegen.sv              ;         ;
+; encoder.sv                       ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/encoder.sv              ;         ;
+; enc2freq.sv                      ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/enc2freq.sv             ;         ;
+; decode7.sv                       ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/decode7.sv              ;         ;
+; decode2.sv                       ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/decode2.sv              ;         ;
+; PN532-FireLinkBridge.sv          ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv ;         ;
+; I2C_Master.sv                    ; yes             ; User SystemVerilog HDL File  ; C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv           ;         ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+
+
++--------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                  ;
++---------------------------------------------+----------------+
+; Resource                                    ; Usage          ;
++---------------------------------------------+----------------+
+; Estimate of Logic utilization (ALMs needed) ; 220            ;
+;                                             ;                ;
+; Combinational ALUT usage for logic          ; 362            ;
+;     -- 7 input functions                    ; 3              ;
+;     -- 6 input functions                    ; 73             ;
+;     -- 5 input functions                    ; 22             ;
+;     -- 4 input functions                    ; 34             ;
+;     -- <=3 input functions                  ; 230            ;
+;                                             ;                ;
+; Dedicated logic registers                   ; 115            ;
+;                                             ;                ;
+; I/O pins                                    ; 20             ;
+;                                             ;                ;
+; Total DSP Blocks                            ; 6              ;
+;                                             ;                ;
+; Maximum fan-out node                        ; CLOCK_50~input ;
+; Maximum fan-out                             ; 115            ;
+; Total fan-out                               ; 1790           ;
+; Average fan-out                             ; 3.42           ;
++---------------------------------------------+----------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                 ;
++---------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------+-----------------------+--------------+
+; Compilation Hierarchy Node      ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                               ; Entity Name           ; Library Name ;
++---------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------+-----------------------+--------------+
+; |PN532_FireLink_Bridge          ; 362 (26)            ; 115 (23)                  ; 0                 ; 6          ; 20   ; 0            ; |PN532_FireLink_Bridge                            ; PN532_FireLink_Bridge ; work         ;
+;    |I2C_Master:i2c_master_inst| ; 145 (145)           ; 15 (15)                   ; 0                 ; 0          ; 0    ; 0            ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst ; I2C_Master            ; work         ;
+;    |decode2:decode2_0|          ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |PN532_FireLink_Bridge|decode2:decode2_0          ; decode2               ; work         ;
+;    |decode7:decode7_0|          ; 7 (7)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |PN532_FireLink_Bridge|decode7:decode7_0          ; decode7               ; work         ;
+;    |enc2freq:enc2freq_2|        ; 22 (22)             ; 8 (8)                     ; 0                 ; 0          ; 0    ; 0            ; |PN532_FireLink_Bridge|enc2freq:enc2freq_2        ; enc2freq              ; work         ;
+;    |encoder:encoder_2|          ; 2 (2)               ; 4 (4)                     ; 0                 ; 0          ; 0    ; 0            ; |PN532_FireLink_Bridge|encoder:encoder_2          ; encoder               ; work         ;
+;    |tonegen:tonegen_1|          ; 157 (157)           ; 65 (65)                   ; 0                 ; 6          ; 0    ; 0            ; |PN532_FireLink_Bridge|tonegen:tonegen_1          ; tonegen               ; work         ;
++---------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------+-----------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++--------------------------------------------------------+
+; Analysis & Synthesis DSP Block Usage Summary           ;
++------------------------------------------+-------------+
+; Statistic                                ; Number Used ;
++------------------------------------------+-------------+
+; Two Independent 18x18                    ; 2           ;
+; Sum of two 18x18                         ; 1           ;
+; Independent 27x27                        ; 3           ;
+; Total number of DSP blocks               ; 6           ;
+;                                          ;             ;
+; Fixed Point Unsigned Multiplier          ; 7           ;
+; Fixed Point Dedicated Output Adder Chain ; 1           ;
++------------------------------------------+-------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------+
+; State Machine - |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|state                    ;
++-----------------+-----------------+----------------+-------------+------------+------------+
+; Name            ; state.CHECK_ACK ; state.SEND_BIT ; state.START ; state.IDLE ; state.STOP ;
++-----------------+-----------------+----------------+-------------+------------+------------+
+; state.IDLE      ; 0               ; 0              ; 0           ; 0          ; 0          ;
+; state.START     ; 0               ; 0              ; 1           ; 1          ; 0          ;
+; state.SEND_BIT  ; 0               ; 1              ; 0           ; 1          ; 0          ;
+; state.CHECK_ACK ; 1               ; 0              ; 0           ; 1          ; 0          ;
+; state.STOP      ; 0               ; 0              ; 0           ; 1          ; 1          ;
++-----------------+-----------------+----------------+-------------+------------+------------+
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; User-Specified and Inferred Latches                                                                                  ;
++-----------------------------------------------------+---------------------------------------+------------------------+
+; Latch Name                                          ; Latch Enable Signal                   ; Free of Timing Hazards ;
++-----------------------------------------------------+---------------------------------------+------------------------+
+; I2C_Master:i2c_master_inst|I2C_write_read_mode      ; I2C_Master:i2c_master_inst|Selector24 ; yes                    ;
+; I2C_Master:i2c_master_inst|ack_state.ACK_3673       ; I2C_Master:i2c_master_inst|Selector28 ; yes                    ;
+; I2C_Master:i2c_master_inst|sda_out                  ; I2C_Master:i2c_master_inst|Selector42 ; yes                    ;
+; I2C_Master:i2c_master_inst|bit_cnt[0]               ; I2C_Master:i2c_master_inst|Selector40 ; yes                    ;
+; I2C_Master:i2c_master_inst|bit_cnt[1]               ; I2C_Master:i2c_master_inst|Selector40 ; yes                    ;
+; I2C_Master:i2c_master_inst|bit_cnt[2]               ; I2C_Master:i2c_master_inst|Selector40 ; yes                    ;
+; I2C_Master:i2c_master_inst|bit_cnt[3]               ; I2C_Master:i2c_master_inst|Selector40 ; yes                    ;
+; I2C_Master:i2c_master_inst|ack_state.NACK_3662      ; I2C_Master:i2c_master_inst|Selector28 ; yes                    ;
+; I2C_Master:i2c_master_inst|byte_idx_tx[3]           ; I2C_Master:i2c_master_inst|Selector44 ; yes                    ;
+; I2C_Master:i2c_master_inst|byte_idx_tx[2]           ; I2C_Master:i2c_master_inst|Selector44 ; yes                    ;
+; I2C_Master:i2c_master_inst|byte_idx_tx[1]           ; I2C_Master:i2c_master_inst|Selector44 ; yes                    ;
+; I2C_Master:i2c_master_inst|byte_idx_tx[0]           ; I2C_Master:i2c_master_inst|Selector44 ; yes                    ;
+; I2C_Master:i2c_master_inst|busy                     ; I2C_Master:i2c_master_inst|Selector51 ; yes                    ;
+; I2C_Master:i2c_master_inst|sda_en                   ; I2C_Master:i2c_master_inst|Selector41 ; yes                    ;
+; I2C_Master:i2c_master_inst|write_read_reg           ; I2C_Master:i2c_master_inst|Selector26 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[4]             ; I2C_Master:i2c_master_inst|Selector36 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[6]             ; I2C_Master:i2c_master_inst|Selector38 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[5]             ; I2C_Master:i2c_master_inst|Selector37 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[7]             ; I2C_Master:i2c_master_inst|Selector39 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[0]             ; I2C_Master:i2c_master_inst|Selector32 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[2]             ; I2C_Master:i2c_master_inst|Selector34 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[1]             ; I2C_Master:i2c_master_inst|Selector33 ; yes                    ;
+; I2C_Master:i2c_master_inst|shift_reg[3]             ; I2C_Master:i2c_master_inst|Selector35 ; yes                    ;
+; Number of user-specified and inferred latches = 23  ;                                       ;                        ;
++-----------------------------------------------------+---------------------------------------+------------------------+
+Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
+
+
++---------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                              ;
++----------------------------------------+----------------------------------------+
+; Register name                          ; Reason for Removal                     ;
++----------------------------------------+----------------------------------------+
+; data_len_tx[2]                         ; Merged with data_tx[1][0]              ;
+; data_tx[0][2]                          ; Merged with data_tx[1][0]              ;
+; slave_addr[2]                          ; Merged with data_tx[1][0]              ;
+; data_tx[0][0]                          ; Merged with data_tx[1][0]              ;
+; data_len_tx[4]                         ; Merged with data_tx[1][0]              ;
+; data_tx[1][4]                          ; Merged with data_tx[1][0]              ;
+; data_tx[0][4]                          ; Merged with data_tx[1][0]              ;
+; data_len_tx[0,3,5]                     ; Merged with data_tx[1][0]              ;
+; data_tx[1][1]                          ; Merged with data_tx[1][0]              ;
+; write_or_read                          ; Merged with data_tx[1][0]              ;
+; data_tx[1][5]                          ; Merged with data_tx[1][0]              ;
+; slave_addr[5]                          ; Merged with data_tx[1][0]              ;
+; data_tx[0][6]                          ; Merged with data_tx[1][0]              ;
+; stop_bit                               ; Merged with data_tx[1][2]              ;
+; slave_addr[0,4]                        ; Merged with data_tx[1][2]              ;
+; data_tx[1][3]                          ; Merged with data_tx[1][2]              ;
+; data_tx[0][1]                          ; Merged with data_tx[1][2]              ;
+; data_tx[0][3]                          ; Merged with data_tx[1][2]              ;
+; data_tx[0][5]                          ; Merged with data_tx[1][2]              ;
+; data_tx[0][7]                          ; Merged with data_tx[1][2]              ;
+; data_tx[1][7]                          ; Merged with data_tx[1][2]              ;
+; data_len_tx[1]                         ; Merged with data_tx[1][2]              ;
+; data_tx[1][6]                          ; Merged with data_tx[1][2]              ;
+; slave_addr[3,6]                        ; Merged with slave_addr[1]              ;
+; s2_prev                                ; Merged with onOff                      ;
+; enc2freq:enc2freq_2|ccw_pulse_count[2] ; Stuck at GND due to stuck port data_in ;
+; enc2freq:enc2freq_2|cw_pulse_count[2]  ; Stuck at GND due to stuck port data_in ;
+; I2C_Master:i2c_master_inst|state~4     ; Lost fanout                            ;
+; I2C_Master:i2c_master_inst|state~5     ; Lost fanout                            ;
+; Total Number of Removed Registers = 33 ;                                        ;
++----------------------------------------+----------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 115   ;
+; Number of registers using Synchronous Clear  ; 79    ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 15    ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 4     ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++---------------------------------------------------+
+; Inverted Register Statistics                      ;
++-----------------------------------------+---------+
+; Inverted Register                       ; Fan out ;
++-----------------------------------------+---------+
+; I2C_Master:i2c_master_inst|scl_internal ; 40      ;
+; data_tx[1][0]                           ; 15      ;
+; Total number of inverted registers = 2  ;         ;
++-----------------------------------------+---------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                       ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------+
+; 3:1                ; 9 bits    ; 18 LEs        ; 0 LEs                ; 18 LEs                 ; Yes        ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|scl_tick[8]    ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |PN532_FireLink_Bridge|enc2freq:enc2freq_2|ccw_pulse_count[1]    ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |PN532_FireLink_Bridge|enc2freq:enc2freq_2|cw_pulse_count[1]     ;
+; 4:1                ; 64 bits   ; 128 LEs       ; 0 LEs                ; 128 LEs                ; Yes        ; |PN532_FireLink_Bridge|tonegen:tonegen_1|counter[8]              ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|Mux1                                      ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|Mux3                                      ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|byte_idx_tx[1] ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|shift_reg[7]   ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|bit_cnt[3]     ;
+; 4:1                ; 9 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|Selector40     ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|shift_reg[7]   ;
+; 13:1               ; 2 bits    ; 16 LEs        ; 12 LEs               ; 4 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|shift_reg[5]   ;
+; 12:1               ; 2 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; No         ; |PN532_FireLink_Bridge|I2C_Master:i2c_master_inst|Selector0      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------+
+; Source assignments for Top-level Entity: |PN532_FireLink_Bridge ;
++-----------------------+-------+------+--------------------------+
+; Assignment            ; Value ; From ; To                       ;
++-----------------------+-------+------+--------------------------+
+; WEAK_PULL_UP_RESISTOR ; ON    ; -    ; enc2_a                   ;
+; WEAK_PULL_UP_RESISTOR ; ON    ; -    ; enc2_b                   ;
+; WEAK_PULL_UP_RESISTOR ; ON    ; -    ; sda                      ;
+; WEAK_PULL_UP_RESISTOR ; ON    ; -    ; scl                      ;
++-----------------------+-------+------+--------------------------+
+
+
++----------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: tonegen:tonegen_1 ;
++----------------+----------+------------------------------------+
+; Parameter Name ; Value    ; Type                               ;
++----------------+----------+------------------------------------+
+; FCLK           ; 50000000 ; Signed Integer                     ;
++----------------+----------+------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: I2C_Master:i2c_master_inst ;
++----------------+----------+---------------------------------------------+
+; Parameter Name ; Value    ; Type                                        ;
++----------------+----------+---------------------------------------------+
+; FPGA_CLK_FREQ  ; 50000000 ; Signed Integer                              ;
+; I2C_FREQ       ; 100000   ; Signed Integer                              ;
+; TX_SIZE        ; 32       ; Signed Integer                              ;
+; RX_SIZE        ; 64       ; Signed Integer                              ;
++----------------+----------+---------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "I2C_Master:i2c_master_inst"                                                                     ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port             ; Type   ; Severity ; Details                                                                             ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; data_tx[2..31]   ; Input  ; Info     ; Stuck at GND                                                                        ;
+; data_rx          ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; data_len_rx      ; Input  ; Info     ; Stuck at GND                                                                        ;
+; ack_error        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; scl_mid_tick_obs ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 115                         ;
+;     CLR               ; 6                           ;
+;     CLR SCLR          ; 9                           ;
+;     ENA               ; 4                           ;
+;     SCLR              ; 70                          ;
+;     plain             ; 26                          ;
+; arriav_io_obuf        ; 1                           ;
+; arriav_lcell_comb     ; 373                         ;
+;     arith             ; 130                         ;
+;         1 data inputs ; 95                          ;
+;         2 data inputs ; 35                          ;
+;     extend            ; 3                           ;
+;         7 data inputs ; 3                           ;
+;     normal            ; 203                         ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 12                          ;
+;         2 data inputs ; 22                          ;
+;         3 data inputs ; 39                          ;
+;         4 data inputs ; 34                          ;
+;         5 data inputs ; 22                          ;
+;         6 data inputs ; 73                          ;
+;     shared            ; 37                          ;
+;         2 data inputs ; 31                          ;
+;         3 data inputs ; 6                           ;
+; arriav_mac            ; 6                           ;
+; boundary_port         ; 20                          ;
+;                       ;                             ;
+; Max LUT depth         ; 8.30                        ;
+; Average LUT depth     ; 4.79                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:01     ;
++----------------+--------------+
 
 
 +-------------------------------+
@@ -160,19 +484,293 @@ refer to the applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-    Info: Processing started: Wed Apr 02 15:33:35 2025
+    Info: Processing started: Mon Apr 14 21:16:25 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off PN532-FireLinkBridge -c PN532-FireLinkBridge
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file tonegen.sv
+    Info (12023): Found entity 1: tonegen File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/tonegen.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file encoder.sv
+    Info (12023): Found entity 1: encoder File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/encoder.sv Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file enc2freq.sv
+    Info (12023): Found entity 1: enc2freq File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/enc2freq.sv Line: 7
+Info (12021): Found 1 design units, including 1 entities, in source file enc2bcd.sv
+    Info (12023): Found entity 1: enc2bcd File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/enc2bcd.sv Line: 7
+Info (12021): Found 1 design units, including 1 entities, in source file decode7.sv
+    Info (12023): Found entity 1: decode7 File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/decode7.sv Line: 7
+Info (12021): Found 1 design units, including 1 entities, in source file decode2.sv
+    Info (12023): Found entity 1: decode2 File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/decode2.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file clock_divider.sv
+    Info (12023): Found entity 1: i2c_master File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/Clock_Divider.sv Line: 7
 Info (12021): Found 1 design units, including 1 entities, in source file pn532-firelinkbridge.sv
-    Info (12023): Found entity 1: PN532_FireLink_Bridge File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 3
+    Info (12023): Found entity 1: PN532_FireLink_Bridge File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file i2c_master.sv
+    Info (12023): Found entity 1: I2C_Master File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 13
+Info (12021): Found 1 design units, including 1 entities, in source file i2c_master_tb.sv
+    Info (12023): Found entity 1: i2c_master_PN532_tb File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master_tb.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file i2c_slave.sv
+    Info (12023): Found entity 1: I2C_Slave File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Slave.sv Line: 7
+Warning (10236): Verilog HDL Implicit Net warning at PN532-FireLinkBridge.sv(63): created implicit net for "reset_n" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 63
 Info (12127): Elaborating entity "PN532_FireLink_Bridge" for the top level hierarchy
-Warning (10034): Output port "scl" at PN532-FireLinkBridge.sv(5) has no driver File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 5
-Error (12006): Node instance "i2c_bus" instantiates undefined entity "i2c_if". Ensure that required library paths are specified correctly, define the specified entity, or change the instantiation. If this entity represents Intel FPGA or third-party IP, generate the synthesis files for the IP. File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 9
-Error: Quartus Prime Analysis & Synthesis was unsuccessful. 1 error, 2 warnings
-    Error: Peak virtual memory: 4773 megabytes
-    Error: Processing ended: Wed Apr 02 15:33:52 2025
-    Error: Elapsed time: 00:00:17
-    Error: Total CPU time (on all processors): 00:00:37
+Warning (10036): Verilog HDL or VHDL warning at PN532-FireLinkBridge.sv(41): object "data_rx" assigned a value but never read File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 41
+Warning (10230): Verilog HDL assignment warning at PN532-FireLinkBridge.sv(107): truncated value with size 32 to match size of target (16) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 107
+Warning (10030): Net "data_tx[2..31]" at PN532-FireLinkBridge.sv(39) has no driver or initial value, using a default initial value '0' File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 39
+Warning (10030): Net "data_len_rx" at PN532-FireLinkBridge.sv(42) has no driver or initial value, using a default initial value '0' File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 42
+Info (12128): Elaborating entity "decode2" for hierarchy "decode2:decode2_0" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 50
+Info (12128): Elaborating entity "decode7" for hierarchy "decode7:decode7_0" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 51
+Info (12128): Elaborating entity "encoder" for hierarchy "encoder:encoder_2" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 59
+Info (12128): Elaborating entity "tonegen" for hierarchy "tonegen:tonegen_1" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 67
+Info (12128): Elaborating entity "enc2freq" for hierarchy "enc2freq:enc2freq_2" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 75
+Warning (10230): Verilog HDL assignment warning at enc2freq.sv(27): truncated value with size 32 to match size of target (3) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/enc2freq.sv Line: 27
+Warning (10230): Verilog HDL assignment warning at enc2freq.sv(39): truncated value with size 32 to match size of target (3) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/enc2freq.sv Line: 39
+Info (12128): Elaborating entity "I2C_Master" for hierarchy "I2C_Master:i2c_master_inst" File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 100
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(114): truncated value with size 32 to match size of target (9) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 114
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(208): truncated value with size 32 to match size of target (4) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 208
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(222): truncated value with size 32 to match size of target (4) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 222
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(234): truncated value with size 32 to match size of target (1) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 234
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(245): truncated value with size 32 to match size of target (4) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 245
+Warning (10027): Verilog HDL or VHDL warning at the I2C_Master.sv(249): index expression is not wide enough to address all of the elements in the array File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 249
+Warning (10230): Verilog HDL assignment warning at I2C_Master.sv(272): truncated value with size 32 to match size of target (4) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 272
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "busy", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "ack_error", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "byte_idx_tx", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "byte_idx_rx", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "sda_out", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "sda_en", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "bit_cnt", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "shift_reg", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "ack_state", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "write_read_reg", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10240): Verilog HDL Always Construct warning at I2C_Master.sv(161): inferring latch(es) for variable "I2C_write_read_mode", which holds its previous value in one or more paths through the always construct File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (10034): Output port "data_rx[16..63]" at I2C_Master.sv(25) has no driver File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 25
+Info (10041): Inferred latch for "data_rx[15][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[15][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[14][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[13][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[12][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[11][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[10][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[9][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[8][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[7][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[6][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[5][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[4][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[3][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[2][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[1][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "data_rx[0][7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "I2C_write_read_mode" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "write_read_reg" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "ack_state.NACK" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "ack_state.ACK" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "ack_state.XACK" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[4]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[5]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[6]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "shift_reg[7]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "bit_cnt[0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "bit_cnt[1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "bit_cnt[2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "bit_cnt[3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "sda_en" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "sda_out" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_rx[0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_rx[1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_rx[2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_rx[3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_tx[0]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_tx[1]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_tx[2]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "byte_idx_tx[3]" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "ack_error" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (10041): Inferred latch for "busy" at I2C_Master.sv(161) File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Info (13014): Ignored 2 buffer(s)
+    Info (13019): Ignored 2 SOFT buffer(s)
+Warning (13012): Latch I2C_Master:i2c_master_inst|I2C_write_read_mode has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 56
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|ack_state.ACK_3673 has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|sda_out has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 71
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.STOP File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|bit_cnt[0] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|bit_cnt[0] File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+Warning (13012): Latch I2C_Master:i2c_master_inst|bit_cnt[1] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.SEND_BIT File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|bit_cnt[2] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.SEND_BIT File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|bit_cnt[3] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.SEND_BIT File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|ack_state.NACK_3662 has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|byte_idx_tx[3] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|byte_idx_tx[2] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|byte_idx_tx[1] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|byte_idx_tx[0] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|busy has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 32
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.START File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|sda_en has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 71
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.STOP File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|write_read_reg has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 56
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.START File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[4] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.START File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[6] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[5] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[7] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[0] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal data_tx[1][0] File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 146
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[2] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.START File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[1] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13012): Latch I2C_Master:i2c_master_inst|shift_reg[3] has unsafe behavior File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 161
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal I2C_Master:i2c_master_inst|state.CHECK_ACK File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/I2C_Master.sv Line: 68
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "leds[7]" is stuck at GND File: C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/PN532-FireLinkBridge.sv Line: 17
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 2 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/output_files/PN532-FireLinkBridge.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 393 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 5 input pins
+    Info (21059): Implemented 14 output pins
+    Info (21060): Implemented 1 bidirectional pins
+    Info (21061): Implemented 367 logic cells
+    Info (21062): Implemented 6 DSP elements
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 75 warnings
+    Info: Peak virtual memory: 4839 megabytes
+    Info: Processing ended: Mon Apr 14 21:16:40 2025
+    Info: Elapsed time: 00:00:15
+    Info: Total CPU time (on all processors): 00:00:33
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/SHAMM/github repos/RFID-NFC-FPGA-Project/Quartus 18-1 Project Files/output_files/PN532-FireLinkBridge.map.smsg.
 
 

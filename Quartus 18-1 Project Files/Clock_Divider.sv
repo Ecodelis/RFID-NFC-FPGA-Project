@@ -18,7 +18,7 @@ localparam int CLK_DIV = FPGA_FREQ / REQ_FREQ ; // Computed at synthesis time (C
 
 logic [$clog2(CLK_DIV)-1:0] clk_cnt;
 
-always_ff @(posedge clk_old) begin
+always_ff @(posedge clk_in) begin
     if (!reset_n) begin
         clk_cnt <= 0;
         clk_out <= 0;
